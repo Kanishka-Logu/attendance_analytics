@@ -6,7 +6,13 @@ SECRET_KEY = 'django-insecure-attendance-analytics-secret-key-change-in-producti
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Add your deployment hostname(s) here (e.g. Render, Heroku).
+# For local development, localhost and 127.0.0.1 are included.
+ALLOWED_HOSTS = [
+    'attendance-analytics-1.onrender.com',
+    'localhost',
+    '127.0.0.1',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
