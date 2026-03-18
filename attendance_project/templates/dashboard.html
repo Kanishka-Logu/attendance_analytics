@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="page-title"><i class="fas fa-home me-2 text-primary"></i>Dashboard</h2>
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card stat-card text-white p-3" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);">
+            <div class="d-flex justify-content-between align-items-center">
+                <div><p class="mb-1 opacity-75 small">Total Students</p><h2 class="mb-0 fw-bold">{{ total_students }}</h2></div>
+                <i class="fas fa-users fa-2x opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card text-white p-3" style="background:linear-gradient(135deg,#22c55e,#15803d);">
+            <div class="d-flex justify-content-between align-items-center">
+                <div><p class="mb-1 opacity-75 small">Present Today</p><h2 class="mb-0 fw-bold">{{ present_today }}</h2></div>
+                <i class="fas fa-user-check fa-2x opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card text-white p-3" style="background:linear-gradient(135deg,#ef4444,#b91c1c);">
+            <div class="d-flex justify-content-between align-items-center">
+                <div><p class="mb-1 opacity-75 small">Absent Today</p><h2 class="mb-0 fw-bold">{{ absent_today }}</h2></div>
+                <i class="fas fa-user-times fa-2x opacity-50"></i>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card stat-card">
+    <div class="card-header bg-white fw-bold py-3">
+        <i class="fas fa-exclamation-triangle text-warning me-2"></i>Low Attendance Alert
+        <span class="badge bg-warning text-dark ms-2">Below 75%</span>
+    </div>
+    <div class="card-body p-0">
+        {% if low_attendance %}
+        <table class="table table-hover mb-0">
+            <thead class="table-light"><tr><th>Roll No</th><th>Name</th><th>Attendance %</th><th>Status</th></tr></thead>
+            <tbody>
+                {% for s in low_attendance %}
+                <tr>
+                    <td>{{ s.roll_number }}</td><td>{{ s.name }}</td>
+                    <td>
+                        <div class="progress" style="height:18px;width:120px;">
+                            <div class="progress-bar bg-danger" style="width:{{ s.attendance_percentage }}%">{{ s.attendance_percentage }}%</div>
+                        </div>
+                    </td>
+                    <td><span class="badge bg-danger">At Risk</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="p-4 text-center text-success">
+            <i class="fas fa-check-circle fa-2x mb-2 d-block"></i>
+            All students have attendance above 75%. Great job!
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

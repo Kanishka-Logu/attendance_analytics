@@ -1,0 +1,40 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<h2 style="font-weight:700;color:#1e293b;margin-bottom:24px;"><i class="fas fa-clipboard-check me-2 text-primary"></i>Mark Attendance</h2>
+<div class="card">
+  <div class="card-body">
+    <form method="POST">
+      {% csrf_token %}
+      <div class="row mb-4 align-items-end">
+        <div class="col-md-3">
+          <label class="form-label fw-bold">Select Date</label>
+          <input type="date" name="date" class="form-control" value="{{ today }}">
+        </div>
+        <div class="col-md-3">
+          <button type="submit" class="btn btn-success"><i class="fas fa-save me-2"></i>Save Attendance</button>
+        </div>
+        <div class="col-md-6 text-end">
+          <button type="button" class="btn btn-outline-success btn-sm me-2" onclick="document.querySelectorAll('input[value=Present]').forEach(r=>r.checked=true)">Mark All Present</button>
+          <button type="button" class="btn btn-outline-danger btn-sm" onclick="document.querySelectorAll('input[value=Absent]').forEach(r=>r.checked=true)">Mark All Absent</button>
+        </div>
+      </div>
+      <table class="table table-bordered">
+        <thead class="table-dark"><tr><th>#</th><th>Roll No</th><th>Name</th><th class="text-center">Present</th><th class="text-center">Absent</th></tr></thead>
+        <tbody>
+          {% for item in student_data %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ item.student.roll_number }}</td>
+            <td>{{ item.student.name }}</td>
+            <td class="text-center"><input type="radio" name="status_{{ item.student.id }}" value="Present" {% if item.status == 'Present' %}checked{% endif %}></td>
+            <td class="text-center"><input type="radio" name="status_{{ item.student.id }}" value="Absent" {% if item.status == 'Absent' %}checked{% endif %}></td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="5" class="text-center p-4">No students. <a href="{% url 'students' %}">Add students first.</a></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>
+{% endblock %}
